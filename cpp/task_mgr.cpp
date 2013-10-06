@@ -1,3 +1,5 @@
+// linux: g++ task_mgr.cpp -o task_mgr -std=c++11 -lpthread
+
 #include <iostream>
 #include <thread>
 #include <queue>
@@ -8,6 +10,7 @@
 class Task
 {
 public:
+  virtual ~Task(void) {}
   virtual std::string GetName(void) const = 0;
   virtual void Run(void) = 0;
 };
@@ -94,8 +97,9 @@ public:
 
     m_Running = false;
 
-    std::unique_lock<std::mutex> Lock(m_Mutex);
+    m_Mutex.lock();
     m_Tasks.push(nullptr);
+    m_Mutex.unlock();
     m_Thread.join();
   }
 
