@@ -99,6 +99,7 @@ public:
 
     m_Mutex.lock();
     m_Tasks.push(nullptr);
+    m_CondVar.notify_one();
     m_Mutex.unlock();
     m_Thread.join();
   }
